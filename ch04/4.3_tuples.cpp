@@ -2,7 +2,8 @@
 #include <iostream>
 #include <variant>
 
-auto get_student(int id) {
+auto get_student(int id)
+{
     switch (id)
     {
     case 0:
@@ -18,47 +19,54 @@ auto get_student(int id) {
 
 //runtime indexing
 template <size_t n, typename... T>
-constexpr std::variant<T...> _tuple_index(const std::tuple<T...>& tpl, size_t i) {
-    if constexpr (n >= sizeof...(T)) 
+constexpr std::variant<T...> _tuple_index(const std::tuple<T...> &tpl, size_t i)
+{
+    if constexpr (n >= sizeof...(T))
         throw std::out_of_range(" .");
     if (i == n)
-        return std::variant<T...>{ std::in_place_index<n>, std::get<n>(tpl) };
-    return _tuple_index<(n < sizeof...(T)-1 ? n+1 : 0)>(tpl, i); 
+        return std::variant<T...>{std::in_place_index<n>, std::get<n>(tpl)};
+    return _tuple_index<(n < sizeof...(T) - 1 ? n + 1 : 0)>(tpl, i);
 }
 
 template <typename... T>
-constexpr std::variant<T...> tuple_index(const std::tuple<T...>& tpl, size_t i) {
-    return _tuple_index<0>(tpl, i); 
+constexpr std::variant<T...> tuple_index(const std::tuple<T...> &tpl, size_t i)
+{
+    return _tuple_index<0>(tpl, i);
 }
 
-template <typename T0, typename ... Ts>
-std::ostream & operator<< (std::ostream & s, std::variant<T0, Ts...> const & v) {
-    std::visit([&](auto && x){ s << x;}, v);
-    return s; 
+template <typename T0, typename... Ts>
+std::ostream &operator<<(std::ostream &s, std::variant<T0, Ts...> const &v)
+{
+    std::visit([&](auto &&x)
+               { s << x; },
+               v);
+    return s;
 }
 
 //
 template <typename T>
-auto tuple_len(T &tpl) {
+auto tuple_len(T &tpl)
+{
     return std::tuple_size<T>::value;
 }
 
-int main() {
+int main()
+{
     auto s1 = get_student(0);
-    std::cout << "id: 0, " 
-        << "GAP: " << std::get<0>(s1) << ","
-        << "Grade: " << std::get<1>(s1) << ","
-        << "Name: " << std::get<0>(s1) << std::endl;
+    std::cout << "id: 0, "
+              << "GAP: " << std::get<0>(s1) << ","
+              << "Grade: " << std::get<1>(s1) << ","
+              << "Name: " << std::get<0>(s1) << std::endl;
 
     double gpa;
     char grade;
     std::string name;
 
     std::tie(gpa, grade, name) = get_student(1);
-    std::cout << "id: 1, " 
-        << "GAP: " << gpa << ","
-        << "Grade: " << grade << ","
-        << "Name: " << name << std::endl;
+    std::cout << "id: 1, "
+              << "GAP: " << gpa << ","
+              << "Grade: " << grade << ","
+              << "Name: " << name << std::endl;
 
     //tie by type
     std::tuple<std::string, double, double, int> t("123", 4.5, 6.7, 8);
@@ -76,10 +84,9 @@ int main() {
     auto l = tuple_len(new_tuple);
     std::cout << l << std::endl;
 
-    for (int i=0; i<tuple_len(new_tuple); ++i) {
+    for (int i = 0; i < tuple_len(new_tuple); ++i)
+    {
         std::cout << tuple_index(new_tuple, i) << ",";
     }
     std::cout << std::endl;
-
-
 }

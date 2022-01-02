@@ -1,8 +1,9 @@
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-int add(int x, int y);
+    int add(int x, int y);
 
 #ifdef __cplusplus
 }
