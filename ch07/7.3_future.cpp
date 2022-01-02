@@ -13,7 +13,7 @@ int main()
     std::cout << "waiting...";
     result.wait(); // block until future has arrived
     // output result
-    std::cout << "done!" << std::endl 
-        << "future result is " << result.get() << std::endl;
+    std::cout << "done!" << std::endl
+              << "future result is " << result.get() << std::endl;
     return 0;
 }

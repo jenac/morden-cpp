@@ -43,7 +43,8 @@ void critical_section_lock(int change_v)
     std::cout << v << std::endl;
 }
 
-void demo2() {
+void demo2()
+{
     std::cout << "-----demo2-----" << std::endl;
     std::thread t1(critical_section_lock, 2), t2(critical_section_lock, 3);
     t1.join();
